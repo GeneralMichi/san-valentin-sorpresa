@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi persona favorita 🤍</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤍</text></svg>">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(106, 27, 154, 0.2);
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        /* Pantalla de inicio para activar audio */
+        #welcome-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            color: white;
+        }
+
+        .start-btn {
+            background: #9c27b0;
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            color: #4a148c;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #7b1fa2;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .img-container img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            height: 60px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Fredoka One', cursive;
+            white-space: nowrap;
+        }
+
+        .btn-yes {
+            background-color: #9c27b0;
+            color: white;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+            z-index: 20;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            background-color: #7b1fa2;
+        }
+
+        .btn-no {
+            background-color: #e1bee7;
+            color: #4a148c;
+            position: relative;
+        }
+
+        #question-screen,
+        #success-screen {
+            display: none;
+            /* Se ocultan al inicio */
+        }
+
+        /* Estilos finales */
+        #success-screen {
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s forwards;
+        }
+
+        .romantic-phrase {
+            font-size: 1.1rem;
+            color: #4a148c;
+            margin: 15px 0 25px;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .counter-container {
+            margin: 20px 0;
+            color: #6a1b9a;
+        }
+
+        #counter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-family: 'Fredoka One', cursive;
+            margin-top: 10px;
+        }
+
+        .counter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .counter-item span {
+            font-size: 2rem;
+            line-height: 1;
+            color: #4a148c;
+        }
+
+        .counter-item small {
+            font-size: 0.8rem;
+            font-family: 'Nunito', sans-serif;
+            color: #7b1fa2;
+        }
+
+        .emoji {
+            position: fixed;
+            top: -10%;
+            font-size: 2rem;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .ticket {
+            background: linear-gradient(45deg, #6a1b9a, #8e24aa);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed #e1bee7;
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .ticket h3 {
+            margin: 0 0 15px 0;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .ticket p {
+            color: #e1bee7;
+            margin: 5px 0;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 2rem;
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .start-btn {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+                width: 80%;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 15px;
+                height: auto;
+            }
+
+            button {
+                width: 100%;
+                font-size: 1.1rem;
+            }
+
+            .img-container img {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Video oculto pero activo para autoplay -->
+    <div id="video-container" style="position: fixed; top: -1000px; opacity: 0; pointer-events: none;"></div>
+
+    <div id="welcome-screen">
+        <h1 style="color: white; margin-bottom: 30px;">¡Hola! tengo una pregunta...</h1>
+        <button class="start-btn" onclick="startExperience()">Haz click para comenzar 🤍</button>
+    </div>
+
+    <div class="container" id="question-screen">
+        <div class="img-container">
+            <img src="Kuromi.jpeg" alt="Kuromi Cute">
+        </div>
+        <h1>¿Quieres ser mi San Valentín?</h1>
+        <p>Prometo una cita nivel Victoria Magistral 💜</p>
+
+        <div class="btn-group">
+            <button class="btn-yes" id="btn-yes" onclick="sheSaidYes()">¡SÍ!</button>
+            <button class="btn-no" id="btn-no" onclick="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="container" id="success-screen">
+        <h1 style="color: #6a1b9a;">¡Sabía que dirías que sí! 🤍</h1>
+
+        <p class="romantic-phrase">
+            "Si pudiera elegir un lugar seguro, sería a tu lado. Cuanto más tiempo estoy contigo, más me doy cuenta de
+            que eres mi dúo perfecto."
+        </p>
+
+        <div class="counter-container">
+            <p style="margin-bottom: 5px;">Nuestra historia comenzó hace...</p>
+            <div id="counter">
+                <div class="counter-item"><span id="days">0</span><small>días</small></div>
+                <div class="counter-item"><span id="hours">00</span><small>horas</small></div>
+                <div class="counter-item"><span id="minutes">00</span><small>minutos</small></div>
+                <div class="counter-item"><span id="seconds">00</span><small>segundos</small></div>
+            </div>
+        </div>
+
+        <div class="ticket">
+            <h3>🎟️ TICKET DE MISIÓN: SAN VALENTÍN</h3>
+            <p>📅 <strong>Fecha:</strong> 14 de Febrero</p>
+            <p>📍 <strong>Destino:</strong> Una sorpresa que te encantará</p>
+            <p>🎯 <strong>Misión:</strong> Crear recuerdos épicos juntos</p>
+            <p style="font-size: 0.9rem; margin-top: 15px; text-align: center; color: white;">
+                (P.D. Prepárate, no es un plan "bot")
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN FECHA ---
+        // IMPORTANTE: El mes 11 es DICIEMBRE. Si querías NOVIEMBRE, pon un 10.
+        // Formato: Año, Mes (0-11), Día, Hora, Minuto
+        const startDate = new Date(2025, 11, 5, 19, 34);
+
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        let attempts = 0;
+
+        // Frases para el botón NO (ahora en loop)
+        const noPhrases = [
+            "¿Segura?",
+            "¿Estás 100% segura?",
+            "Piénsalo bien... 🥺",
+            "¡No seas así!",
+            "boa llorar...",
+            "Le boa decir a Kuromi",
+            "💔 💔 💔",
+            "Ya di que sí porfa",
+            "No acepto un no"
+        ];
+
+        // Función de inicio (Desbloquea audio y muestra la pregunta)
+        function startExperience() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('question-screen').style.display = 'block';
+
+            // Inyectar el video de YouTube al hacer click para forzar autoplay
+            const videoContainer = document.getElementById('video-container');
+            videoContainer.innerHTML = `
+                <iframe width="560" height="315" 
+                src="https://www.youtube.com/embed/eXCEXK1McT8?si=dxWPy1Tr0XE3ePY6&autoplay=1&loop=1&playlist=eXCEXK1McT8" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen></iframe>`;
+        }
+
+        function moveButton() {
+            attempts++;
+
+            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
+
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${x}px`;
+            btnNo.style.top = `${y}px`;
+            btnNo.style.width = 'auto'; /* Reset width for mobile */
+
+            // Lógica del Loop: Usamos el operador residuo (%)
+            // Esto hace que si attempts es mayor que la lista, vuelva a empezar 0, 1, 2...
+            const phraseIndex = attempts % noPhrases.length;
+            btnNo.innerText = noPhrases[phraseIndex];
+
+            // Agrandar el botón SÍ
+            let scale = 1 + (attempts * 0.1);
+            btnYes.style.transform = `scale(${scale})`;
+        }
+
+        function sheSaidYes() {
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'flex';
+
+            createRain();
+            updateCounter();
+            setInterval(updateCounter, 1000);
+        }
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            // Evitar números negativos si la fecha está mal configurada
+            if (diff < 0) return;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        function createRain() {
+            const emojis = ['🌷', '🤍', '🎮', '💀', '🌸', '💜'];
+
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                el.classList.add('emoji');
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = Math.random() * 2 + 3 + 's';
+                document.body.appendChild(el);
+
+                setTimeout(() => {
+                    el.remove();
+                }, 5000);
+            }, 300);
+        }
+    </script>
+</body>
+
+</html>
